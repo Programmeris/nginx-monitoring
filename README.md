@@ -1,3 +1,3 @@
 # nginx-monitoring
 
-nginx configuration stuff based on Lua module
+nginx monitoring configuration stuff based on Lua module
