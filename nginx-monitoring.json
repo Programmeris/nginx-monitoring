@@ -424,6 +424,7 @@
           ],
           "show": false
         },
+        "frameIndex": 0,
         "showHeader": true
       },
       "pluginVersion": "9.3.8",
@@ -434,13 +435,30 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, sum(rate(nginx_http_request_duration_seconds_bucket{instance=\"$server\"}[2m])) by (uri))",
-          "format": "heatmap",
-          "instant": false,
+          "exemplar": false,
+          "expr": "histogram_quantile(0.50, sum(rate(nginx_http_request_duration_seconds_bucket_bucket{instance=\"$server\"}[2m])) by (le, uri))",
+          "format": "table",
+          "instant": true,
           "interval": "20s",
           "intervalFactor": 2,
-          "legendFormat": "{{le}}",
+          "legendFormat": "{{ uri }}",
+          "range": false,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "histogram_quantile(0.90, sum(rate(nginx_http_request_duration_seconds_bucket_bucket{instance=\"$server\"}[2m])) by (le, uri))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
         }
       ],
       "title": "Requests Percentile Response Times and Transfer Rates",
@@ -550,6 +568,6 @@
   "timezone": "",
   "title": "Nginx Mertics",
   "uid": "a656iKHIz",
-  "version": 11,
+  "version": 14,
   "weekStart": ""
 }
