@@ -178,7 +178,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(irate(nginx_http_requests_total{instance=\"$server\"}[5m])) by (uri)",
+          "expr": "sum(nginx_http_requests_total{instance=\"$server\"}) by (uri, status)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{host}}",
@@ -299,7 +299,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(rate(nginx_http_requests_total{instance=\"$server\",status!~\"[4-5].*\"}[2m])) by (uri) / sum(rate(nginx_http_requests_total{instance=\"$server\",status=\"[4-5].*\"}[2m])) by (uri)",
+          "expr": "sum(rate(nginx_http_requests_total{instance=\"$server\",status=\"[4-5].*\"}[2m])) by (uri) / sum(rate(nginx_http_requests_total{instance=\"$server\",status=\"[4-5].*\"}[2m])) by (uri)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -471,114 +471,6 @@
       ],
       "title": "Requests Percentile Response Times and Transfer Rates",
       "type": "table"
-    },
-    {
-      "aliasColors": {
-        "302": "light-purple",
-        "304": "semi-dark-purple",
-        "409": "semi-dark-red"
-      },
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 24
-      },
-      "hiddenSeries": false,
-      "id": 8,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "9.3.8",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "200",
-          "color": "#56A64B"
-        },
-        {
-          "alias": "500",
-          "color": "#C4162A"
-        },
-        {
-          "alias": "502",
-          "color": "#E02F44"
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "rate(nginx_http_requests_total{instance=\"$server\"}[2m])",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "{{status}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "Requests by Status - $host",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
     }
   ],
   "refresh": "10s",
@@ -684,6 +576,6 @@
   "timezone": "",
   "title": "Nginx Mertics",
   "uid": "a656iKHIz",
-  "version": 8,
+  "version": 9,
   "weekStart": ""
 }
