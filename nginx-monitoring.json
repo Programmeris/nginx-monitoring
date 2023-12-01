@@ -224,12 +224,37 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -254,20 +279,19 @@
         "x": 0,
         "y": 8
       },
-      "id": 2,
-      "interval": "20s",
-      "links": [],
+      "id": 14,
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showHeader": true
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.3.8",
       "targets": [
         {
           "datasource": {
@@ -275,17 +299,14 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, sum(rate(nginx_http_request_duration_seconds_bucket{instance=\"$server\"}[1m])) by (uri))",
-          "format": "heatmap",
-          "instant": false,
-          "interval": "20s",
-          "intervalFactor": 2,
-          "legendFormat": "{{le}}",
+          "expr": "sum(rate(nginx_http_requests_total{instance=\"$server\",status!~\"[4-5].*\"}[2m])) by (uri) / sum(rate(nginx_http_requests_total{instance=\"$server\",status=\"[4-5].*\"}[2m])) by (uri)",
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "A"
         }
       ],
-      "title": "Requests Percentile Response Times and Transfer Rates",
-      "type": "table"
+      "title": "Requests Error Rate (4|5xx responses)",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -381,6 +402,77 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 2,
+      "interval": "20s",
+      "links": [],
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.3.8",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.50, sum(rate(nginx_http_request_duration_seconds_bucket{instance=\"$server\"}[2m])) by (uri))",
+          "format": "heatmap",
+          "instant": false,
+          "interval": "20s",
+          "intervalFactor": 2,
+          "legendFormat": "{{le}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Requests Percentile Response Times and Transfer Rates",
+      "type": "table"
+    },
+    {
       "aliasColors": {
         "302": "light-purple",
         "304": "semi-dark-purple",
@@ -399,7 +491,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 24
       },
       "hiddenSeries": false,
       "id": 8,
@@ -499,7 +591,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "10.244.0.200:80",
           "value": "10.244.0.200:80"
         },
@@ -530,7 +622,7 @@
       {
         "current": {
           "isNone": true,
-          "selected": true,
+          "selected": false,
           "text": "None",
           "value": ""
         },
@@ -592,6 +684,6 @@
   "timezone": "",
   "title": "Nginx Mertics",
   "uid": "a656iKHIz",
-  "version": 6,
+  "version": 8,
   "weekStart": ""
 }
