@@ -383,12 +383,37 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -403,7 +428,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "percentunit"
         },
         "overrides": []
       },
@@ -417,15 +443,16 @@
       "interval": "20s",
       "links": [],
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "frameIndex": 0,
-        "showHeader": true
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "9.3.8",
       "targets": [
@@ -436,7 +463,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.50, sum(rate(nginx_http_request_duration_seconds_bucket_bucket{instance=\"$server\"}[2m])) by (le, uri))",
+          "expr": "histogram_quantile(0.90, sum(rate(nginx_http_request_duration_seconds_bucket_bucket{instance=\"$server\", uri!=\"/metrics\"}[2m])) by (le, uri))",
           "format": "table",
           "instant": true,
           "interval": "20s",
@@ -452,17 +479,29 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "histogram_quantile(0.90, sum(rate(nginx_http_request_duration_seconds_bucket_bucket{instance=\"$server\"}[2m])) by (le, uri))",
+          "expr": "histogram_quantile(0.95, sum(rate(nginx_http_request_duration_seconds_bucket_bucket{instance=\"$server\", uri!=\"/metrics\"}[2m])) by (le, uri))",
           "format": "table",
           "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.99, sum(rate(nginx_http_request_duration_seconds_bucket_bucket{instance=\"$server\", uri!=\"/metrics\"}[2m])) by (le, uri))",
+          "hide": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "C"
         }
       ],
       "title": "Requests Percentile Response Times and Transfer Rates",
-      "type": "table"
+      "type": "timeseries"
     }
   ],
   "refresh": "10s",
@@ -568,6 +607,6 @@
   "timezone": "",
   "title": "Nginx Mertics",
   "uid": "a656iKHIz",
-  "version": 14,
+  "version": 16,
   "weekStart": ""
 }
