@@ -187,7 +187,7 @@
           "refId": "A"
         }
       ],
-      "title": "Requests Per Uri",
+      "title": "Requests Per Uri and Status",
       "type": "piechart"
     },
     {
@@ -550,6 +550,6 @@
   "timezone": "",
   "title": "Nginx Mertics",
   "uid": "a656iKHIz",
-  "version": 10,
+  "version": 11,
   "weekStart": ""
 }
